@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Darkshipreturn Diary</title>
   <style>
     body {
@@ -52,47 +52,31 @@
       border-radius: 10px;
       margin: 20px 0;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
+      text-align: left;
     }
 
     .card h2 {
       font-size: 28px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      text-align: center;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
+    .entry {
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #333;
     }
 
-    li {
-      margin: 10px 0;
-      font-size: 18px;
-    }
-
-    form input, form textarea, form button {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      font-size: 16px;
-    }
-
-    form button {
-      background-color: #4dabf7;
-      color: #0e0e0e;
+    .entry-date {
+      color: #4dabf7;
       font-weight: bold;
-      cursor: pointer;
+      margin-bottom: 5px;
+      display: block;
     }
 
-    form button:hover {
-      background-color: #76c7ff;
+    .entry-text {
+      white-space: pre-wrap;
+      line-height: 1.6;
     }
 
     footer {
@@ -115,19 +99,27 @@
   <div class="container">
     <div class="card" id="logs">
       <h2>Diary Entries</h2>
-      <ul id="entryList">
-        <!-- Entries will appear here -->
-        <li><strong>2025-04-07</strong> - First diary setup complete 😎</li>
-      </ul>
-    </div>
 
-    <div class="card">
-      <h2>Add New Entry</h2>
-      <form id="diaryForm">
-        <input type="date" id="entryDate" required>
-        <textarea id="entryText" rows="4" placeholder="What's on your mind?" required></textarea>
-        <button type="submit">Add Entry</button>
-      </form>
+      <!-- Example Entry -->
+      <div class="entry">
+        <span class="entry-date">2025-04-07</span>
+        <div class="entry-text">
+          Today I turned this website into a personal diary.
+          Feeling pretty good about the new layout. 😎
+        </div>
+      </div>
+
+      <!-- Add more entries below -->
+      <div class="entry">
+        <span class="entry-date">2025-04-06</span>
+        <div class="entry-text">
+          Spent the evening tweaking some CSS.
+          Still figuring out the best way to display projects.
+        </div>
+      </div>
+
+      <!-- Copy & paste the block above to add more entries -->
+      
     </div>
   </div>
 
@@ -135,22 +127,5 @@
     &copy; 2025 Darkshipreturn. All Rights Reserved.
   </footer>
 
-  <script>
-    const diaryForm = document.getElementById('diaryForm');
-    const entryList = document.getElementById('entryList');
-
-    diaryForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const date = document.getElementById('entryDate').value;
-      const text = document.getElementById('entryText').value;
-
-      const li = document.createElement('li');
-      li.innerHTML = `<strong>${date}</strong> - ${text}`;
-      entryList.prepend(li);
-
-      diaryForm.reset();
-    });
-  </script>
 </body>
 </html>
