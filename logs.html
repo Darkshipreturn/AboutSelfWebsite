@@ -1,81 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Darkshipreturn Diary</title>
   <style>
-  :root {
-    --bg-color: #0e0e0e;
-    --text-color: #ffffff;
-    --card-bg: #1e1e1e;
-    --link-color: #4dabf7;
-    --link-hover: #76c7ff;
-    --btn-text: #ffffff;
-    --btn-bg: #4dabf7;
-    --btn-hover: #76c7ff;
-  }
+    :root {
+      --bg-color: #0e0e0e;
+      --text-color: #ffffff;
+      --card-bg: #1e1e1e;
+      --link-color: #4dabf7;
+      --link-hover: #76c7ff;
+      --btn-text: #ffffff;
+      --btn-bg: #4dabf7;
+      --btn-hover: #76c7ff;
+    }
 
-  /* Light theme overrides */
-  html[data-theme="light"] {
-    --bg-color: #f4f4f4;
-    --text-color: #111111;
-    --card-bg: #ffffff;
-    --link-color: #0077cc;
-    --link-hover: #005fa3;
-    --btn-text: #ffffff;
-    --btn-bg: #0077cc;
-    --btn-hover: #005fa3;
-  }
+    html[data-theme="light"] {
+      --bg-color: #f4f4f4;
+      --text-color: #111111;
+      --card-bg: #ffffff;
+      --link-color: #0077cc;
+      --link-hover: #005fa3;
+      --btn-text: #ffffff;
+      --btn-bg: #0077cc;
+      --btn-hover: #005fa3;
+    }
 
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-  }
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      text-align: center;
+    }
 
-  .card {
-    background: var(--card-bg);
-  }
+    .social-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 15px 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
 
-  a {
-    color: var(--link-color);
-  }
+    .social-navbar a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 18px;
+      transition: color 0.3s;
+    }
 
-  a:hover {
-    color: var(--link-hover);
-  }
+    .social-navbar a:hover {
+      color: var(--link-hover);
+    }
 
-  .btn {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
+    .container {
+      max-width: 900px;
+      margin: 100px auto 40px auto;
+      padding: 20px;
+    }
 
-  .btn:hover {
-    background-color: var(--btn-hover);
-  }
+    .card {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 10px;
+      margin: 20px 0;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
 
-  /* Optional: Make the toggle button look nice */
-  #modeToggle {
-    margin-left: auto;
-    background: none;
-    border: none;
-    font-size: 18px;
-    color: var(--text-color);
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: color 0.3s ease;
-  }
+    .entry {
+      text-align: left;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--link-color);
+      padding-left: 15px;
+    }
 
-  #modeToggle:hover {
-    color: var(--link-hover);
-  }
+    .entry-date {
+      font-weight: bold;
+      font-size: 16px;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .entry-text {
+      font-size: 16px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    #modeToggle {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--text-color);
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: color 0.3s ease;
+    }
+
+    #modeToggle:hover {
+      color: var(--link-hover);
+    }
+
+    footer {
+      background: var(--card-bg);
+      padding: 15px;
+      font-size: 14px;
+      color: #ccc;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
   </style>
 </head>
 <body>
@@ -89,26 +145,24 @@
     <div class="card" id="logs">
       <h2>Diary Entries</h2>
 
-      <!-- Example Entry -->
       <div class="entry">
         <span class="entry-date">2025-04-07</span>
         <div class="entry-text">
-          Today I turned this website into a personal diary.
+          Today I turned this website into a personal diary.  
           Feeling pretty good about the new layout. 😎
         </div>
       </div>
 
-      <!-- Add more entries below -->
       <div class="entry">
         <span class="entry-date">2025-04-06</span>
         <div class="entry-text">
-          Spent the evening tweaking some CSS.
+          Spent the evening tweaking some CSS.  
           Still figuring out the best way to display projects.
         </div>
       </div>
 
-      <!-- Copy & paste the block above to add more entries -->
-      
+      <!-- Add more entries as needed -->
+
     </div>
   </div>
 
@@ -116,24 +170,23 @@
     &copy; 2025 Darkshipreturn. All Rights Reserved.
   </footer>
 
+  <script>
+    const toggleBtn = document.getElementById("modeToggle");
+    const root = document.documentElement;
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      root.setAttribute("data-theme", savedTheme);
+      toggleBtn.textContent = savedTheme === "light" ? "🌙" : "☀️";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      const currentTheme = root.getAttribute("data-theme") || "dark";
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+      toggleBtn.textContent = newTheme === "light" ? "🌙" : "☀️";
+    });
+  </script>
 </body>
-<script>
-  const toggleBtn = document.getElementById("modeToggle");
-  const root = document.documentElement;
-
-  // Load saved theme
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) {
-    root.setAttribute("data-theme", savedTheme);
-    toggleBtn.textContent = savedTheme === "light" ? "🌙" : "☀️";
-  }
-
-  toggleBtn.addEventListener("click", () => {
-    const currentTheme = root.getAttribute("data-theme") || "dark";
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    toggleBtn.textContent = newTheme === "light" ? "🌙" : "☀️";
-  });
-</script>
 </html>
