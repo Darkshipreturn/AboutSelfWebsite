@@ -1,142 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Darkshipreturn</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #0e0e0e;
-            color: #ffffff;
-            text-align: center;
-        }
-        .social-navbar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #1a1a1a;
-            padding: 15px 20px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        .social-navbar a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            margin: 0 15px;
-            transition: color 0.3s;
-        }
-        .social-navbar a:hover {
-            color: #4dabf7;
-        }
-        .container {
-            max-width: 900px;
-            margin: 80px auto 20px auto;
-            padding: 20px;
-        }
-        .title {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .subtitle {
-            font-size: 22px;
-            color: #bbbbbb;
-            margin-bottom: 30px;
-        }
-        .card {
-            background: #1e1e1e;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .card a {
-            color: #4dabf7;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .card a:hover {
-            color: #76c7ff;
-        }
-        footer {
-            background: #1a1a1a;
-            padding: 15px;
-            font-size: 14px;
-            color: #ccc;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-        .btn {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #4dabf7;
-    color: #ffffff;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-        }
-        .btn:hover {
-    background-color: #76c7ff;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darkshipreturn</title>
+  <style>
+    :root {
+      --bg-color: #0e0e0e;
+      --text-color: #ffffff;
+      --card-bg: #1e1e1e;
+      --link-color: #4dabf7;
+      --link-hover: #76c7ff;
+      --btn-text: #ffffff;
+      --btn-bg: #4dabf7;
+      --btn-hover: #76c7ff;
+    }
+
+    html[data-theme="light"] {
+      --bg-color: #f4f4f4;
+      --text-color: #111111;
+      --card-bg: #ffffff;
+      --link-color: #0077cc;
+      --link-hover: #005fa3;
+      --btn-text: #ffffff;
+      --btn-bg: #0077cc;
+      --btn-hover: #005fa3;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      text-align: center;
+    }
+
+    .social-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 15px 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    .social-navbar a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 18px;
+      margin: 0 15px;
+      transition: color 0.3s;
+    }
+
+    .social-navbar a:hover {
+      color: var(--link-hover);
+    }
+
+    #modeToggle {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--text-color);
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: color 0.3s ease;
+    }
+
+    #modeToggle:hover {
+      color: var(--link-hover);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 100px auto 20px auto;
+      padding: 20px;
+    }
+
+    .title {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 22px;
+      color: var(--link-hover);
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 10px;
+      margin: 20px 0;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .card a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .card a:hover {
+      color: var(--link-hover);
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    footer {
+      background: var(--card-bg);
+      padding: 15px;
+      font-size: 14px;
+      color: #ccc;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
 </head>
 <body>
-    <nav class="social-navbar">
-        <a href="https://twitter.com" target="_blank">Twitter</a>
-        <a href="https://github.com" target="_blank">GitHub</a>
-        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-        <a href="https://discord.com" target="_blank">Discord</a>
-    </nav>
 
-    <div class="container">
-        <div class="title">Darkshipreturn</div>
-        <div class="subtitle">Web Developer | Designer | Information Technology Student</div>
-        
-        <div class="card" id="about">
-            <h2>About Me</h2>
-            <p>
-                Hello! I'm Dark, a passionate web developer and designer focused on creating elegant, user-friendly websites. 
-                I specialize in JavaScript and Python development.
-            </p>
-            <a href="logs.html" class="btn">Click here to see logs</a>
-        </div>
-        
-        <div class="card" id="projects">
-            <h2>Projects</h2>
-            <ul>
-                <li><strong>Minecraft Stats Website [In Progress]</strong> - <a href="https://antiskeppy.xyz/" target="_blank">https://antiskeppy.xyz/</a></li>
-                <li><strong>Project 2</strong> - Null</li>
-                <li><strong>Project 3</strong> - Null</li>
-            </ul>
-        </div>
-        
-        <div class="card" id="contact">
-            <h2>Contact</h2>
-            <p>Email: <a href="mailto:Darkshipreturn@gmail.com">Darkshipreturn@gmail.com</a></p>
-        </div>
+  <nav class="social-navbar">
+    <div>
+      <a href="https://twitter.com" target="_blank">Twitter</a>
+      <a href="https://github.com" target="_blank">GitHub</a>
+      <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+      <a href="https://discord.com" target="_blank">Discord</a>
     </div>
-    
-    <footer>
-        &copy; 2025 Darkshipreturn. All Rights Reserved.
-    </footer>
+    <button id="modeToggle">🌙</button>
+  </nav>
+
+  <div class="container">
+    <div class="title">Darkshipreturn</div>
+    <div class="subtitle">Web Developer | Designer | Information Technology Student</div>
+
+    <div class="card" id="about">
+      <h2>About Me</h2>
+      <p>
+        Hello! I'm Dark, a passionate web developer and designer focused on creating elegant, user-friendly websites.
+        I specialize in JavaScript and Python development.
+      </p>
+      <a href="logs.html" class="btn">Click here to see logs</a>
+    </div>
+
+    <div class="card" id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li><strong>Minecraft Stats Website [In Progress]</strong> - <a href="https://antiskeppy.xyz/" target="_blank">https://antiskeppy.xyz/</a></li>
+        <li><strong>Project 2</strong> - Null</li>
+        <li><strong>Project 3</strong> - Null</li>
+      </ul>
+    </div>
+
+    <div class="card" id="contact">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:Darkshipreturn@gmail.com">Darkshipreturn@gmail.com</a></p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Darkshipreturn. All Rights Reserved.
+  </footer>
+
+  <script>
+    const toggleBtn = document.getElementById("modeToggle");
+    const root = document.documentElement;
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      root.setAttribute("data-theme", savedTheme);
+      toggleBtn.textContent = savedTheme === "light" ? "🌙" : "☀️";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      const currentTheme = root.getAttribute("data-theme") || "dark";
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+      toggleBtn.textContent = newTheme === "light" ? "🌙" : "☀️";
+    });
+  </script>
+
 </body>
 </html>
