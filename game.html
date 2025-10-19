@@ -127,6 +127,27 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center text-sm text-slate-400">&copy; 2025 Darkshipreturn. All rights reserved.</div></div>
   </footer>
 
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+
+<script>
+  // Your web app's Firebase configuration (the one you copied earlier)
+  const firebaseConfig = {
+  apiKey: "AIzaSyCfDTrvR1Zae4RBrJGSD7SjTQa06KVMf6U",
+  authDomain: "darkshipreturn-snake-game1.firebaseapp.com",
+  projectId: "darkshipreturn-snake-game1",
+  storageBucket: "darkshipreturn-snake-game1.firebasestorage.app",
+  messagingSenderId: "909362495325",
+  appId: "1:909362495325:web:0d381f78bda58cd85072b4",
+  measurementId: "G-YBWLS7QBB8"
+};
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
   <!-- External Scripts -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="script.js"></script>
