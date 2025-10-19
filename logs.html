@@ -2,615 +2,157 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Darkshipreturn Diary</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darkshipreturn | Project Logs</title>
+  
+  <!-- External Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="logs.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      transition: background-color 0.5s ease;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    
-    .diary-entry {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    
-    .diary-entry::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 4px;
-      background: linear-gradient(to bottom, #4f46e5, #ec4899);
-    }
-    
-    .color-picker {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-      position: relative;
-    }
-    
-    .color-picker:hover {
-      transform: scale(1.1);
-    }
-    
-    .color-picker.selected::after {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 12px;
-    }
-    
-    .mood-indicator {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-entry {
-      animation: fadeIn 0.4s ease-out forwards;
-    }
-    
-    .settings-panel {
-      position: fixed;
-      top: 0;
-      right: -300px;
-      width: 300px;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      transition: right 0.3s ease;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    
-    .settings-panel.open {
-      right: 0;
-    }
-    
-    .settings-toggle {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 50px;
-      height: 50px;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 90;
-      transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    
-    .settings-toggle:hover {
-      background: rgba(0, 0, 0, 0.9);
-      transform: scale(1.1);
-    }
-    
-    .collapsed-entry {
-      max-height: 95px;
-      overflow: hidden;
-    }
-    
-    .expanded-entry {
-      max-height: 1000px;
-    }
-    
-    .entry-preview {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    
-    .entry-full {
-      display: block;
-    }
-    
-    .entry-preview::after {
-      content: "Click to read full entry...";
-      display: block;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      margin-top: 8px;
-      font-style: italic;
-    }
-    
-    .entry-full::after {
-      content: "Click to collapse...";
-      display: block;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      margin-top: 8px;
-      font-style: italic;
-    }
-    
-    .entry-summary {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 10px;
-      font-style: italic;
-      border-left: 2px solid rgba(255,255,255,0.3);
-      padding-left: 10px;
-    }
-    
-    /* Loading Animation */
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      transition: opacity 1s ease-out, visibility 1s ease-out;
-    }
-    
-    .loading-content {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .loading-logo {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(45deg, #4f46e5, #ec4899);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-      box-shadow: 0 0 20px rgba(79, 70, 229, 0.7);
-      z-index: 10;
-      animation: pulse 2s infinite;
-    }
-    
-    .loading-ring {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border: 3px solid transparent;
-      border-top-color: #4f46e5;
-      border-radius: 50%;
-      animation: rotate 2s linear infinite;
-    }
-    
-    .loading-ring:nth-child(2) {
-      border-top-color: #ec4899;
-      animation: rotate 3s linear infinite reverse;
-    }
-    
-    .loading-ring:nth-child(3) {
-      border-top-color: #10b981;
-      animation: rotate 4s linear infinite;
-      width: 80%;
-      height: 80%;
-    }
-    
-    .loading-text {
-      margin-top: 40px;
-      font-size: 18px;
-      color: white;
-      text-align: center;
-      opacity: 0;
-      animation: fadeInText 1.5s ease-in forwards 1s;
-    }
-    
-    .loading-progress {
-      width: 200px;
-      height: 4px;
-      background: rgba(255,255,255,0.2);
-      margin-top: 20px;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    
-    .loading-progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #4f46e5, #ec4899);
-      width: 0%;
-      animation: progress 2s ease-in-out forwards;
-      border-radius: 2px;
-    }
-    
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 20px rgba(79, 70, 229, 0.7); }
-      50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(79, 70, 229, 0.9); }
-      100% { transform: scale(1); box-shadow: 0 0 20px rgba(79, 70, 229, 0.7); }
-    }
-    
-    @keyframes fadeInText {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    
-    @keyframes progress {
-      0% { width: 0%; }
-      20% { width: 20%; }
-      40% { width: 45%; }
-      60% { width: 65%; }
-      80% { width: 85%; }
-      100% { width: 100%; }
-    }
-    
-    /* Stars background */
-    .stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-    
-    .star {
-      position: absolute;
-      background-color: white;
-      border-radius: 50%;
-      animation: twinkle var(--duration) ease-in-out infinite;
-    }
-    
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 1; }
-    }
-  </style>
+  
+  <!-- External Scripts -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-blue-900 via-cyan-900 to-teal-800 text-white">
-  <!-- Loading Screen -->
-  <div class="loading-screen" id="loadingScreen">
-    <div class="stars" id="stars"></div>
-    <div class="loading-content">
-      <div class="loading-ring"></div>
-      <div class="loading-ring"></div>
-      <div class="loading-ring"></div>
-      <div class="loading-logo">D</div>
-    </div>
-    <div class="loading-text">Launching Darkshipreturn Logs</div>
-    <div class="loading-progress">
-      <div class="loading-progress-bar"></div>
-    </div>
-  </div>
-
-  <!-- Main Content (initially hidden) -->
-  <div id="mainContent" style="display: none;">
-    <nav class="fixed top-0 left-0 right-0 bg-black bg-opacity-70 backdrop-blur-md z-50 py-4 px-6 flex justify-between items-center shadow-lg">
-      <a href="index.html" class="text-white hover:text-indigo-300 transition-colors flex items-center">
-        <i class="fas fa-arrow-left mr-2"></i>
-        <span>Go Back</span>
-      </a>
-      <h1 class="text-xl font-bold">My Personal Diary</h1>
-      <div class="w-8"></div> <!-- Spacer for balance -->
-    </nav>
-
-    <div class="settings-toggle" id="settingsToggle">
-      <i class="fas fa-palette text-white text-xl"></i>
-    </div>
-
-    <div class="settings-panel" id="settingsPanel">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold">Theme Settings</h2>
-        <button id="closeSettings" class="text-gray-300 hover:text-white">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      
-      <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-3">Background Color</h3>
-        <div class="grid grid-cols-5 gap-3">
-          <div class="color-picker bg-indigo-600" data-color="from-indigo-900 via-purple-900 to-pink-800"></div>
-          <div class="color-picker bg-blue-600 selected" data-color="from-blue-900 via-cyan-900 to-teal-800"></div>
-          <div class="color-picker bg-green-600" data-color="from-green-900 via-emerald-900 to-teal-800"></div>
-          <div class="color-picker bg-red-600" data-color="from-red-900 via-pink-900 to-rose-800"></div>
-          <div class="color-picker bg-yellow-600" data-color="from-amber-900 via-orange-900 to-red-800"></div>
-          <div class="color-picker bg-purple-600" data-color="from-purple-900 via-fuchsia-900 to-pink-800"></div>
-          <div class="color-picker bg-cyan-600" data-color="from-cyan-900 via-sky-900 to-blue-800"></div>
-          <div class="color-picker bg-emerald-600" data-color="from-emerald-900 via-teal-900 to-cyan-800"></div>
-          <div class="color-picker bg-rose-600" data-color="from-rose-900 via-pink-900 to-red-800"></div>
-          <div class="color-picker bg-gray-600" data-color="from-gray-900 via-gray-800 to-gray-700"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container mx-auto px-4 pt-24 pb-20 max-w-3xl">
-      <div id="diary-entries" class="space-y-6">
-        <!-- Example entries -->
-        <div class="diary-entry bg-black bg-opacity-40 rounded-xl p-6 backdrop-blur-sm animate-entry collapsed-entry" style="animation-delay: 0.1s">
-          <div class="flex items-center mb-3">
-            <div class="mood-indicator bg-pink-500"></div>
-            <span class="text-sm font-semibold text-pink-300">April 7, 2025 • Happy</span>
-          </div>
-          <div class="entry-summary">
-            A day of creative breakthroughs and design inspiration
-          </div>
-          <div class="entry-preview text-gray-100 leading-relaxed">
-            Today I completely redesigned my diary with a beautiful gradient background and color options. 
-            It feels so much more personal now! The floating add button is a nice touch too. 
-            <span class="text-indigo-300">#coding #design</span>
-          </div>
-          <div class="entry-full text-gray-100 leading-relaxed hidden">
-            <p class="mb-4">Today I completely redesigned my diary with a beautiful gradient background and color options. 
-            It feels so much more personal now! The floating add button is a nice touch too.</p>
-            
-            <p class="mb-4">I spent about 3 hours working on the UI, making sure the animations were smooth and the color 
-            transitions worked perfectly. The settings panel was tricky to implement but I'm really happy 
-            with how it turned out.</p>
-            
-            <p>Some key improvements I made:</p>
-            <ul class="list-disc pl-5 mb-4">
-              <li>Added color theme selection with visual indicators</li>
-              <li>Improved entry expansion/collapse functionality</li>
-              <li>Added entry summaries for quick scanning</li>
-              <li>Optimized the mobile experience</li>
-            </ul>
-            
-            <p>Can't wait to add more features! Maybe I'll implement mood tracking or tags next.</p>
-            <span class="text-indigo-300">#coding #design #webdev #personalproject</span>
-          </div>
-        </div>
-
-        <div class="diary-entry bg-black bg-opacity-40 rounded-xl p-6 backdrop-blur-sm animate-entry collapsed-entry" style="animation-delay: 0.2s">
-          <div class="flex items-center mb-3">
-            <div class="mood-indicator bg-blue-500"></div>
-            <span class="text-sm font-semibold text-blue-300">April 6, 2025 • Calm</span>
-          </div>
-          <div class="entry-summary">
-            A peaceful afternoon with a thought-provoking book
-          </div>
-          <div class="entry-preview text-gray-100 leading-relaxed">
-            Spent the afternoon reading by the window while it rained. There's something magical about 
-            rainy days that makes everything feel cozier. Finished "The Midnight Library" - what an 
-            incredible book! <span class="text-purple-300">#reading #rainyday</span>
-          </div>
-          <div class="entry-full text-gray-100 leading-relaxed hidden">
-            <p class="mb-4">Spent the afternoon reading by the window while it rained. There's something magical about 
-            rainy days that makes everything feel cozier. The sound of rain against the window, the dim 
-            natural light, and a warm cup of tea created the perfect atmosphere.</p>
-            
-            <p class="mb-4">Finished "The Midnight Library" - what an incredible book! The concept of exploring different 
-            versions of your life really made me think about the choices I've made and the paths not taken. 
-            The ending was particularly poignant and left me in a reflective mood for hours afterward.</p>
-            
-            <p class="mb-4">Some key takeaways from the book:</p>
-            <ul class="list-disc pl-5 mb-4">
-              <li>Every life has its own challenges and rewards</li>
-              <li>Regret is natural but shouldn't consume us</li>
-              <li>Small changes can have big impacts</li>
-              <li>The importance of appreciating the present</li>
-            </ul>
-            
-            <p>I think I'll read it again in a few months - I suspect there are layers I missed on this first read.</p>
-            <span class="text-purple-300">#reading #rainyday #books #reflection #personalgrowth</span>
-          </div>
-        </div>
-
-        <div class="diary-entry bg-black bg-opacity-40 rounded-xl p-6 backdrop-blur-sm animate-entry collapsed-entry" style="animation-delay: 0.3s">
-          <div class="flex items-center mb-3">
-            <div class="mood-indicator bg-yellow-500"></div>
-            <span class="text-sm font-semibold text-yellow-300">April 5, 2025 • Energetic</span>
-          </div>
-          <div class="entry-summary">
-            A day of personal achievements and productivity
-          </div>
-          <div class="entry-preview text-gray-100 leading-relaxed">
-            Went for an early morning run and beat my personal record! The sunrise was breathtaking today. 
-            Later worked on a new coding project - making good progress. Need to remember to drink more water though.
-            <span class="text-cyan-300">#fitness #coding</span>
-          </div>
-          <div class="entry-full text-gray-100 leading-relaxed hidden">
-            <p class="mb-4">Went for an early morning run and beat my personal record! Managed to shave 45 seconds off my 
-            previous best time for the 5K route around the park. The sunrise was breathtaking today - vibrant 
-            oranges and pinks reflecting off the lake. Saw a family of ducks swimming in formation, which 
-            made me smile.</p>
-            
-            <p class="mb-4">Later worked on a new coding project - making good progress with the authentication system. 
-            Implemented JWT tokens and refresh tokens successfully after a few hiccups. The documentation 
-            wasn't as clear as I'd hoped, but Stack Overflow came to the rescue as usual.</p>
-            
-            <p class="mb-4">Project milestones achieved:</p>
-            <ul class="list-disc pl-5 mb-4">
-              <li>User authentication system complete</li>
-              <li>Database schema finalized</li>
-              <li>Basic frontend components built</li>
-              <li>Deployment pipeline set up</li>
-            </ul>
-            
-            <p>Need to remember to drink more water though. Only had two glasses all day and now I've got a 
-            slight headache. Note to self: keep water bottle on desk at all times!</p>
-            <span class="text-cyan-300">#fitness #coding #health #productivity #webdevelopment</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer class="py-4 text-center text-gray-400 text-sm bg-black bg-opacity-50 fixed bottom-0 left-0 right-0">
-      &copy; 2025 Darkshipreturn Diary • Made with <i class="fas fa-heart text-pink-400 mx-1"></i>
-    </footer>
-  </div>
-
+<body>
+  <!-- This script runs instantly to set the theme -->
   <script>
-    // Create stars for loading screen
-    function createStars() {
-      const starsContainer = document.getElementById('stars');
-      const starsCount = 100;
-      
-      for (let i = 0; i < starsCount; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        
-        // Random position
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        
-        // Random size (0.5px to 2px)
-        const size = Math.random() * 1.5 + 0.5;
-        
-        // Random animation duration (2s to 5s)
-        const duration = Math.random() * 3 + 2;
-        
-        star.style.left = `${x}%`;
-        star.style.top = `${y}%`;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.setProperty('--duration', `${duration}s`);
-        
-        // Random delay for twinkling effect
-        star.style.animationDelay = `${Math.random() * 5}s`;
-        
-        starsContainer.appendChild(star);
-      }
-    }
-    
-    // Initialize loading animation
-    document.addEventListener('DOMContentLoaded', () => {
-      createStars();
-      
-      // Simulate loading (in a real app, you'd wait for actual resources to load)
-      setTimeout(() => {
-        const loadingScreen = document.getElementById('loadingScreen');
-        const mainContent = document.getElementById('mainContent');
-        
-        // Fade out loading screen
-        loadingScreen.style.opacity = '0';
-        loadingScreen.style.visibility = 'hidden';
-        
-        // Show main content
-        mainContent.style.display = 'block';
-        
-        // Remove loading screen from DOM after animation completes
-        setTimeout(() => {
-          loadingScreen.remove();
-          
-          // Initialize the rest of the app
-          initializeApp();
-        }, 1000);
-      }, 3000); // 3 second loading simulation
-    });
-    
-    function initializeApp() {
-      // Settings panel toggle
-      const settingsToggle = document.getElementById('settingsToggle');
-      const settingsPanel = document.getElementById('settingsPanel');
-      const closeSettings = document.getElementById('closeSettings');
-      
-      settingsToggle.addEventListener('click', () => {
-        settingsPanel.classList.toggle('open');
-      });
-      
-      closeSettings.addEventListener('click', () => {
-        settingsPanel.classList.remove('open');
-      });
-
-      // Background color changer
-      document.querySelectorAll('.color-picker').forEach(picker => {
-        picker.addEventListener('click', () => {
-          // Remove selected class from all pickers
-          document.querySelectorAll('.color-picker').forEach(p => {
-            p.classList.remove('selected');
-          });
-          
-          // Add selected class to clicked picker
-          picker.classList.add('selected');
-          
-          const gradientClasses = picker.getAttribute('data-color').split(' ');
-          document.body.className = `bg-gradient-to-br ${gradientClasses.join(' ')} text-white`;
-          localStorage.setItem('diaryBackground', picker.getAttribute('data-color'));
-          localStorage.setItem('selectedColorPicker', picker.getAttribute('data-color'));
-        });
-      });
-
-      // Load saved background preference
-      const savedBg = localStorage.getItem('diaryBackground');
-      const savedPicker = localStorage.getItem('selectedColorPicker');
-      
-      if (savedBg) {
-        const gradientClasses = savedBg.split(' ');
-        document.body.className = `bg-gradient-to-br ${gradientClasses.join(' ')} text-white`;
-        
-        // Mark the saved picker as selected
-        if (savedPicker) {
-          document.querySelector(`.color-picker[data-color="${savedPicker}"]`).classList.add('selected');
-        } else {
-          // Default to blue if no selection saved
-          document.querySelector('.color-picker[data-color="from-blue-900 via-cyan-900 to-teal-800"]').classList.add('selected');
-        }
-      } else {
-        // Default to blue if no saved background
-        document.querySelector('.color-picker[data-color="from-blue-900 via-cyan-900 to-teal-800"]').classList.add('selected');
-      }
-
-      // Expand/collapse diary entries
-      document.querySelectorAll('.diary-entry').forEach(entry => {
-        entry.addEventListener('click', (e) => {
-          // Don't toggle if clicking on a button inside the entry
-          if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
-            return;
-          }
-          
-          entry.classList.toggle('collapsed-entry');
-          entry.classList.toggle('expanded-entry');
-          
-          const preview = entry.querySelector('.entry-preview');
-          const full = entry.querySelector('.entry-full');
-          
-          if (entry.classList.contains('expanded-entry')) {
-            preview.classList.add('hidden');
-            full.classList.remove('hidden');
-          } else {
-            preview.classList.remove('hidden');
-            full.classList.add('hidden');
-          }
-        });
-      });
-
-      // Animation for existing entries
-      document.querySelectorAll('.animate-entry').forEach((entry, index) => {
-        entry.style.animationDelay = `${index * 0.1}s`;
-      });
-    }
+    const savedTheme = localStorage.getItem('theme') || 'blue';
+    document.body.className = `theme-${savedTheme}`;
   </script>
+
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <!-- Theme Controls Panel -->
+  <div id="theme-controls-panel" class="theme-controls" role="region" aria-labelledby="theme-heading">
+    <button id="theme-toggle-btn" class="theme-toggle" aria-controls="theme-controls-panel" aria-expanded="false" aria-label="Toggle theme controls">
+      <i class="fas fa-palette"></i>
+    </button>
+    <h3 id="theme-heading" class="text-lg font-bold mb-4">Theme Color</h3>
+    <div class="color-picker">
+        <button class="color-option" style="background: #3b82f6;" data-theme="blue" aria-label="Select blue theme"><i class="fas fa-check"></i></button>
+        <button class="color-option" style="background: #8b5cf6;" data-theme="purple" aria-label="Select purple theme"><i class="fas fa-check"></i></button>
+        <button class="color-option" style="background: #10b981;" data-theme="green" aria-label="Select green theme"><i class="fas fa-check"></i></button>
+        <button class="color-option" style="background: #ef4444;" data-theme="red" aria-label="Select red theme"><i class="fas fa-check"></i></button>
+        <button class="color-option" style="background: #ec4899;" data-theme="pink" aria-label="Select pink theme"><i class="fas fa-check"></i></button>
+        <button class="color-option" style="background: #f97316;" data-theme="orange" aria-label="Select orange theme"><i class="fas fa-check"></i></button>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-800/90 backdrop-blur-md shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-3 items-center h-16">
+        <div class="justify-self-start">
+          <a href="index.html" class="flex items-center space-x-2 text-white hover:text-[var(--primary-color)] transition-colors">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Home</span>
+          </a>
+        </div>
+        <div class="justify-self-center">
+            <h1 class="text-xl font-bold text-white whitespace-nowrap">Project Logs</h1>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-24 pb-16"> 
+    <div class="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <!-- Filter Controls -->
+        <div class="filter-controls bg-slate-800/50 p-4 rounded-xl border border-slate-700 mb-8 flex flex-col sm:flex-row gap-4">
+          <div class="relative flex-grow">
+            <input type="text" id="searchInput" placeholder="Search by title..." class="w-full bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition">
+            <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          </div>
+          <div class="flex gap-4">
+            <select id="tagFilter" class="flex-grow bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition">
+              <option value="all">All Tags</option>
+            </select>
+            <select id="dateSort" class="flex-grow bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="log-entries" class="space-y-6">
+          <!-- Log Entry 1 -->
+          <div class="log-entry card-hover bg-slate-800/50 rounded-xl border border-slate-700" data-date="2025-04-07" data-tags="ui/ux,webdev,portfolio">
+            <div class="entry-header p-6">
+              <div class="flex-grow">
+                <h3 class="text-xl font-bold mb-2 text-white">Redesigned the Project Logs Page</h3>
+                <div class="flex items-center">
+                  <div class="mood-indicator" style="background-color: #ec4899;"></div>
+                  <span class="text-sm font-semibold text-slate-300">April 7, 2025 • Happy</span>
+                </div>
+              </div>
+              <button class="expand-btn" aria-expanded="false" aria-label="Expand entry">
+                <i class="fas fa-chevron-down"></i>
+              </button>
+            </div>
+            <div class="entry-content px-6 pb-6">
+              <p class="entry-summary">A day of creative breakthroughs, focusing on unifying the portfolio's design language and improving user experience across all pages.</p>
+              <div class="entry-details">
+                <p class="font-semibold mt-4 mb-2">Key Improvements:</p>
+                <ul class="list-disc pl-5 mb-4 space-y-1">
+                  <li>Integrated the main site's theme switcher for a consistent experience.</li>
+                  <li>Updated card styles, fonts, and navigation to match the portfolio.</li>
+                  <li>Refactored CSS into a separate, organized `logs.css` file.</li>
+                  <li>Improved the entry expansion/collapse functionality to be smoother.</li>
+                </ul>
+                <span class="tag">#UI/UX</span> <span class="tag">#WebDev</span> <span class="tag">#Portfolio</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Log Entry 2 -->
+          <div class="log-entry card-hover bg-slate-800/50 rounded-xl border border-slate-700" data-date="2025-04-06" data-tags="reading,reflection">
+            <div class="entry-header p-6">
+              <div class="flex-grow">
+                <h3 class="text-xl font-bold mb-2 text-white">Reading and Reflection</h3>
+                <div class="flex items-center">
+                  <div class="mood-indicator" style="background-color: #3b82f6;"></div>
+                  <span class="text-sm font-semibold text-slate-300">April 6, 2025 • Calm</span>
+                </div>
+              </div>
+               <button class="expand-btn" aria-expanded="false" aria-label="Expand entry">
+                <i class="fas fa-chevron-down"></i>
+              </button>
+            </div>
+            <div class="entry-content px-6 pb-6">
+              <p class="entry-summary">A peaceful afternoon spent reading "The Midnight Library," which sparked a lot of thought about choices and personal growth.</p>
+              <div class="entry-details">
+                <p class="font-semibold mt-4 mb-2">Key Takeaways:</p>
+                <ul class="list-disc pl-5 mb-4 space-y-1">
+                  <li>Every life has its own challenges and rewards.</li>
+                  <li>Regret is a natural emotion, but it shouldn't consume us.</li>
+                  <li>The importance of appreciating the present moment.</li>
+                </ul>
+                <span class="tag">#Reading</span> <span class="tag">#Reflection</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="no-results" class="text-center py-10 text-slate-400 hidden">
+          <h3 class="text-2xl font-bold">No logs found</h3>
+          <p>Try adjusting your search or filter criteria.</p>
+        </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-800/90 backdrop-blur-md py-4 border-t border-slate-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center text-sm text-slate-400">
+        &copy; 2025 Darkshipreturn. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- External Scripts -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="script.js"></script>
+  <script src="logs.js"></script>
 </body>
 </html>
