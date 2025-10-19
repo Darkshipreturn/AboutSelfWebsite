@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f8fafc;
+      font-family: 'Poppins', sans-serif;
+    }
+    #admin-content {
+      display: none;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+  <!-- LOGIN FORM CONTAINER -->
+  <div id="login-container" class="w-full max-w-sm">
+    <form id="loginForm" class="bg-slate-800/50 p-8 rounded-xl border border-slate-700">
+        <h1 class="text-2xl font-bold text-center mb-4">Admin Access</h1>
+        <div class="mb-4 relative">
+            <label for="password" class="block text-slate-400 text-sm font-bold mb-2">Password</label>
+            <!-- Add padding-right to input to make space for the icon -->
+            <input type="password" id="password" name="password" required class="w-full bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 text-white focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition pr-10">
+            <!-- The eye icon -->
+            <i class="fas fa-eye absolute right-3 top-10 cursor-pointer text-slate-400 hover:text-white" id="togglePassword"></i>
+        </div>
+        <button type="submit" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-colors">
+            Login
+        </button>
+        <p id="errorMessage" class="text-red-400 text-sm text-center mt-4 h-4"></p>
+    </form>
+  </div>
+
+  <!-- MAIN ADMIN CONTENT (Initially Hidden) -->
+  <div id="admin-content" class="w-full max-w-md p-8 bg-slate-800/50 rounded-xl border border-slate-700 text-center">
+    <h1 class="text-3xl font-bold mb-4">Admin Controls</h1>
+    <p class="text-slate-400 mb-6">These actions affect your browser's stored data for the snake game.</p>
+    
+    <div class="bg-red-900/50 border border-red-700 rounded-lg p-4">
+        <h2 class="text-xl font-bold text-red-300 mb-2">Reset Game Data</h2>
+        <p class="text-red-300/80 mb-4">This will permanently delete the leaderboard and your saved player name from your browser's storage.</p>
+        <button id="resetDataButton" class="w-full px-4 py-3 bg-red-800 hover:bg-red-700 text-white rounded-lg font-bold transition-colors">
+            <i class="fas fa-trash-alt mr-2"></i>Reset All Data
+        </button>
+    </div>
+
+    <a href="index.html" class="inline-block mt-6 text-slate-400 hover:text-white transition-colors">&larr; Back to home</a>
+  </div>
+
+  <!-- Include the SHA-256 library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+
+  <script>
+    // --- SECURE LOGIN LOGIC ---
+
+    const STORED_HASH = "26177042ddbf20b22f6dbc6b65691a59a2f53efac99518608498789009087de8"; 
+
+    const loginForm = document.getElementById('loginForm');
+    const passwordInput = document.getElementById('password');
+    const errorMessage = document.getElementById('errorMessage');
+    const loginContainer = document.getElementById('login-container');
+    const adminContent = document.getElementById('admin-content');
+    const togglePassword = document.getElementById('togglePassword');
+
+    loginForm.addEventListener('submit', (event) => {
+        event.preventDefault(); 
+        const enteredPassword = passwordInput.value;
+        const enteredHash = sha256(enteredPassword);
+
+        if (enteredHash === STORED_HASH) {
+            loginContainer.style.display = 'none';
+            adminContent.style.display = 'block';
+        } else {
+            errorMessage.textContent = 'Incorrect password.';
+            passwordInput.value = '';
+        }
+    });
+    
+    // --- NEW: Password Visibility Toggle ---
+    togglePassword.addEventListener('click', () => {
+        // Toggle the type attribute
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        // Toggle the icon
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
+
+    // --- RESET BUTTON LOGIC ---
+    document.getElementById('resetDataButton').addEventListener('click', () => {
+      if (confirm('Are you sure you want to reset all game data? This cannot be undone.')) {
+        localStorage.removeItem('snakeHighScores');
+        localStorage.removeItem('snakePlayerName');
+        alert('Game data has been reset successfully.');
+      }
+    });
+  </script>
+
+</body>
+</html>
