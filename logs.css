@@ -1,0 +1,98 @@
+/* Styles for the logs page */
+
+/* Filter Controls */
+.filter-controls select, .filter-controls input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+.filter-controls input {
+  background-image: none;
+  padding-right: 2.5rem; /* Keep padding consistent */
+}
+
+/* Log Entry Styling */
+.log-entry {
+  position: relative;
+  overflow: hidden;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mood-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  color: #94a3b8; /* slate-400 */
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.expand-btn:hover {
+  color: var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.expand-btn i {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.log-entry.expanded .expand-btn i {
+  transform: rotate(180deg);
+}
+
+.entry-summary {
+  color: #cbd5e1; /* slate-300 */
+  line-height: 1.6;
+}
+
+/* --- MODIFICATION START --- */
+/* The new logic for collapsing only the details */
+.entry-details {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              opacity 0.3s ease-in-out;
+}
+
+.log-entry.expanded .entry-details {
+  max-height: 1000px; /* A large value to allow content to expand */
+  opacity: 1;
+}
+/* --- MODIFICATION END --- */
+
+.entry-details p, .entry-details ul {
+  color: #e2e8f0; /* slate-200 */
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(var(--primary-color-rgb), 0.2);
+  color: var(--primary-color);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
