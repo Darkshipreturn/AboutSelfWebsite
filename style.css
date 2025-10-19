@@ -4,11 +4,17 @@
 /* Base Body Styles */
 body {
   font-family: 'Poppins', sans-serif;
-  min-height: 100vh;
+  min-height: 100vh; /* <-- MODIFICATION: Ensures body is at least full screen height */
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: #f8fafc;
   overflow-x: hidden;
   transition: background 0.3s ease;
+  display: flex; /* <-- ADDED: Enables flexbox layout */
+  flex-direction: column; /* <-- ADDED: Stacks children vertically */
+}
+
+main {
+  flex-grow: 1; /* <-- ADDED: Makes the main content grow to fill available space, pushing footer down */
 }
 
 @keyframes rotate {
@@ -220,6 +226,7 @@ body {
   --primary-light: #93c5fd;
   --primary-dark: #1e40af;
   --scrollbar-thumb: #3b82f6;
+  --primary-color-rgb: 59, 130, 246;
 }
 
 .theme-purple {
@@ -228,6 +235,7 @@ body {
   --primary-light: #c4b5fd;
   --primary-dark: #5b21b6;
   --scrollbar-thumb: #8b5cf6;
+  --primary-color-rgb: 139, 92, 246;
 }
 
 .theme-green {
@@ -236,6 +244,7 @@ body {
   --primary-light: #6ee7b7;
   --primary-dark: #065f46;
   --scrollbar-thumb: #10b981;
+  --primary-color-rgb: 16, 185, 129;
 }
 
 .theme-red {
@@ -244,6 +253,7 @@ body {
   --primary-light: #fca5a5;
   --primary-dark: #b91c1c;
   --scrollbar-thumb: #ef4444;
+  --primary-color-rgb: 239, 68, 68;
 }
 
 .theme-pink {
@@ -252,6 +262,7 @@ body {
   --primary-light: #f9a8d4;
   --primary-dark: #9d174d;
   --scrollbar-thumb: #ec4899;
+  --primary-color-rgb: 236, 72, 153;
 }
 
 .theme-orange {
@@ -260,4 +271,5 @@ body {
   --primary-light: #fdba74;
   --primary-dark: #9a3412;
   --scrollbar-thumb: #f97316;
+  --primary-color-rgb: 249, 115, 22;
 }
