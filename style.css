@@ -1,5 +1,5 @@
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display.swap');
 
 /* Base Body Styles */
 body {
@@ -9,123 +9,6 @@ body {
   color: #f8fafc;
   overflow-x: hidden;
   transition: background 0.3s ease;
-}
-
-/* Enhanced Intro Animation */
-.intro-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #0f172a;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-  opacity: 1;
-  transition: opacity 1s ease;
-}
-
-.intro-logo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 30px;
-  position: relative;
-  transform: scale(0);
-  animation: logoIntro 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-}
-
-.intro-logo::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  padding: 3px;
-  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
-  --webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  --webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: rotate 3s linear infinite;
-}
-
-@keyframes logoIntro {
-  0% { transform: scale(0) rotate(0deg); opacity: 0; }
-  50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
-  100% { transform: scale(1) rotate(360deg); opacity: 1; }
-}
-
-.intro-text {
-  font-size: 3rem;
-  font-weight: bold;
-  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: textFadeIn 1s ease forwards 0.8s;
-  text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-}
-
-@keyframes textFadeIn {
-  to { 
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.intro-progress {
-  width: 300px;
-  height: 6px;
-  background: rgba(255,255,255,0.1);
-  margin-top: 40px;
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
-}
-
-.intro-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  width: 0;
-  border-radius: 3px;
-  position: relative;
-  overflow: hidden;
-  animation: progressLoad 1.5s ease forwards 1s;
-}
-
-.intro-progress-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255,255,255,0.8), 
-    transparent);
-  animation: shimmer 2s infinite;
-}
-
-@keyframes progressLoad {
-  to { width: 100%; }
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
 }
 
 @keyframes rotate {
@@ -328,18 +211,6 @@ body {
   --webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: rotate 5s linear infinite;
-}
-
-.twitter-icon {
-  color: white !important;
-}
-
-.twitter-icon:hover {
-  color: #1DA1F2 !important;
-}
-
-.twitter-bg {
-  background-color: #1DA1F2 !important;
 }
 
 /* Theme Color Variables */
