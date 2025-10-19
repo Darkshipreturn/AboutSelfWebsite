@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darkshipreturn | Minigame</title>
+  
+  <!-- External Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="game.css"> <!-- Game-specific styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- External Scripts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <!-- This script runs instantly to set the theme -->
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'blue';
+    document.body.className = `theme-${savedTheme}`;
+  </script>
+
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <!-- Theme Controls Panel -->
+  <div id="theme-controls-panel" class="theme-controls" role="region" aria-labelledby="theme-heading">
+    <button id="theme-toggle-btn" class="theme-toggle" aria-controls="theme-controls-panel" aria-expanded="false" aria-label="Toggle theme controls">
+      <i class="fas fa-palette"></i>
+    </button>
+    <h3 id="theme-heading" class="text-lg font-bold mb-4">Theme Color</h3>
+    <div class="color-picker">
+      <button class="color-option" style="background: #3b82f6;" data-theme="blue" aria-label="Select blue theme"><i class="fas fa-check"></i></button>
+      <button class="color-option" style="background: #8b5cf6;" data-theme="purple" aria-label="Select purple theme"><i class="fas fa-check"></i></button>
+      <button class="color-option" style="background: #10b981;" data-theme="green" aria-label="Select green theme"><i class="fas fa-check"></i></button>
+      <button class="color-option" style="background: #ef4444;" data-theme="red" aria-label="Select red theme"><i class="fas fa-check"></i></button>
+      <button class="color-option" style="background: #ec4899;" data-theme="pink" aria-label="Select pink theme"><i class="fas fa-check"></i></button>
+      <button class="color-option" style="background: #f97316;" data-theme="orange" aria-label="Select orange theme"><i class="fas fa-check"></i></button>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-800/90 backdrop-blur-md shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-3 items-center h-16">
+        <div class="justify-self-start">
+          <a href="index.html" class="flex items-center space-x-2 text-white hover:text-[var(--primary-color)] transition-colors">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Home</span>
+          </a>
+        </div>
+        <div class="justify-self-center">
+            <h1 class="text-xl font-bold text-white whitespace-nowrap">Browser Snake</h1>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="pt-24 pb-16">
+    <div class="px-4 sm:px-6 lg:px-8 max-w-xl mx-auto flex flex-col items-center">
+      
+      <!-- Game Container -->
+      <div id="game-container" class="relative w-full">
+        <!-- MODIFICATION: Removed hardcoded width and height -->
+        <canvas id="gameCanvas" class="bg-slate-900/70 rounded-lg border-2 border-slate-700"></canvas>
+        <button id="fullscreenButton" class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+        <div id="gameOverScreen" class="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col justify-center items-center rounded-lg p-4 text-center hidden">
+          <h2 class="text-4xl font-bold text-white mb-2">Game Over</h2>
+          <p class="text-lg text-slate-300 mb-4">Final Score: <span id="finalScore">0</span></p>
+          <form id="scoreForm">
+              <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="10" required class="w-full bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 mb-4 text-center focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition">
+              <button type="submit" class="w-full px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--primary-hover)] rounded-lg font-medium text-white transition-colors">
+                Save Name & Play
+              </button>
+          </form>
+          <button id="playAgainButton" class="w-full px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--primary-hover)] rounded-lg font-medium text-white transition-colors hidden">
+            Play Again
+          </button>
+        </div>
+      </div>
+
+      <!-- Game UI -->
+      <div class="w-full mt-4 flex justify-between items-center text-white">
+        <div class="text-xl font-bold">Score: <span id="score">0</span></div>
+        <div class="text-slate-400 text-sm hidden sm:block">Use Arrow Keys to Move</div>
+      </div>
+
+      <!-- Personal Best Section -->
+      <div class="w-full mt-8">
+          <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+              <!-- Display View -->
+              <div id="personalBestDisplay" class="flex justify-between items-center">
+                  <div>
+                      <h3 id="playerNameDisplay" class="text-xl font-bold text-white">Guest</h3>
+                      <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Personal Best</p>
+                  </div>
+                  <div class="flex items-center gap-4">
+                      <span id="personalBestScore" class="text-3xl font-bold text-[var(--primary-color)]">0</span>
+                      <button id="editNameButton" class="text-slate-400 hover:text-white transition-colors text-lg"><i class="fas fa-pencil-alt"></i></button>
+                  </div>
+              </div>
+              <!-- Edit View (hidden by default) -->
+              <form id="editNameForm" class="hidden">
+                  <input type="text" id="editPlayerNameInput" maxlength="10" required class="w-full bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 text-white focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition">
+                  <div class="flex gap-2 mt-2">
+                      <button type="submit" class="flex-grow px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold text-sm">Save</button>
+                      <button type="button" id="cancelEditButton" class="flex-grow px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold text-sm">Cancel</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <!-- Leaderboard Section -->
+      <div class="w-full mt-8">
+        <h2 class="text-3xl font-bold mb-4 text-center"><span class="border-b-4 border-[var(--primary-color)] pb-2">Leaderboard</span></h2>
+        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+            <ol id="leaderboardList" class="space-y-3 text-white"></ol>
+            <p id="noScoresMessage" class="text-slate-400 text-center hidden">No scores yet. Be the first!</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-800/90 backdrop-blur-md py-4 border-t border-slate-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"><div class="text-center text-sm text-slate-400">&copy; 2025 Darkshipreturn. All rights reserved.</div></div>
+  </footer>
+
+  <!-- External Scripts -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="script.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
