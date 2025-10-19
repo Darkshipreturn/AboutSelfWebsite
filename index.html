@@ -12,22 +12,16 @@
   <!-- External Scripts -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="theme-blue">
+<body>
+  <!-- This script runs instantly to set the theme and prevent color flashing -->
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'blue';
+    document.body.className = `theme-${savedTheme}`;
+  </script>
 
-  <!-- Enhanced Intro Animation -->
-  <div class="intro-overlay" aria-hidden="true">
-    <div class="intro-logo">
-      <span class="text-white font-bold text-4xl">D</span>
-    </div>
-    <div class="intro-text">Darkshipreturn</div>
-    <div class="intro-progress">
-      <div class="intro-progress-bar"></div>
-    </div>
-  </div>
-  
   <!-- Particle Background -->
   <div id="particles-js"></div>
-  
+
   <!-- Theme Controls Panel -->
   <div id="theme-controls-panel" class="theme-controls" role="region" aria-labelledby="theme-heading">
     <button id="theme-toggle-btn" class="theme-toggle" aria-controls="theme-controls-panel" aria-expanded="false" aria-label="Toggle theme controls">
@@ -35,7 +29,7 @@
     </button>
     <h3 id="theme-heading" class="text-lg font-bold mb-4">Theme Color</h3>
     <div class="color-picker">
-      <button class="color-option active" style="background: #3b82f6;" data-theme="blue" aria-label="Select blue theme">
+      <button class="color-option" style="background: #3b82f6;" data-theme="blue" aria-label="Select blue theme">
         <i class="fas fa-check"></i>
       </button>
       <button class="color-option" style="background: #8b5cf6;" data-theme="purple" aria-label="Select purple theme">
@@ -63,7 +57,7 @@
         <div class="flex items-center space-x-4">
           <a href="#" class="flex items-center space-x-2">
             <div class="w-8 h-8 rounded-full bg-[var(--primary-color)] flex items-center justify-center">
-              <span class="text-white font-bold">D</span>
+              <img src="pfp4.png" alt="Profile Picture" class="w-full h-full rounded-full object-cover">
             </div>
             <span class="font-bold text-lg">Darkshipreturn</span>
           </a>
@@ -74,10 +68,10 @@
           <a href="#contact" class="nav-link text-sm font-medium hover:text-[var(--primary-color)]">Contact</a>
         </div>
         <div class="flex items-center space-x-4">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-icon text-lg hover:text-[var(--primary-color)]" aria-label="GitHub Profile">
+          <a href="https://github.com/darkshipreturn" target="_blank" rel="noopener noreferrer" class="social-icon text-lg hover:text-[var(--primary-color)]" aria-label="GitHub Profile">
             <i class="fab fa-github"></i>
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon text-lg twitter-icon" aria-label="Twitter Profile">
+          <a href="https://twitter.com/darkshipreturn" target="_blank" rel="noopener noreferrer" class="social-icon text-lg hover:text-[var(--primary-color)]" aria-label="Twitter Profile">
             <i class="fab fa-twitter"></i>
           </a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon text-lg hover:text-[var(--primary-color)]" aria-label="LinkedIn Profile">
@@ -215,62 +209,48 @@
     <!-- Contact Section -->
     <section id="contact" class="py-12">
       <h2 class="text-3xl font-bold mb-8 text-center">
-        <span class="border-b-4 border-[var(--primary-color)] pb-2">Join Our Community</span>
+        <span class="border-b-4 border-[var(--primary-color)] pb-2">Contact Info</span>
       </h2>
       <div class="max-w-2xl mx-auto">
         <div class="card-hover bg-slate-800/50 p-8 rounded-xl backdrop-blur-sm border border-slate-700">
-          <div class="text-center mb-8">
-            <i class="fas fa-users text-6xl text-[var(--primary-color)] mb-4"></i>
-            <h3 class="text-2xl font-bold mb-2">Let's Connect!</h3>
+          <div class="text-center mb-6">
+            <h3 class="text-2xl font-bold mb-2">Get in Touch</h3>
             <p class="text-slate-300">
-              Join our community discussion to collaborate, ask questions, and share ideas.
+              The best ways to reach me are below.
             </p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="https://discord.gg/7w9MptD4" target="_blank" rel="noopener noreferrer" class="community-card bg-slate-700/50 p-6 rounded-lg border border-slate-600 hover:bg-[var(--primary-color)]/10 transition-colors">
-              <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center"><i class="fab fa-discord text-white text-xl"></i></div>
-                <div>
-                  <h4 class="font-bold">Discord Server</h4>
-                  <p class="text-sm text-slate-300">Live chat with community members</p>
-                </div>
-              </div>
+          
+          <div class="mt-8 pt-8 border-t border-slate-700 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+            <!-- Discord -->
+            <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="flex items-center text-lg text-slate-300 hover:text-[var(--primary-color)] transition-colors">
+              <i class="fab fa-discord w-8 text-center text-xl mr-3 text-indigo-400"></i>
+              <span>speedyshan28</span>
             </a>
-            <a href="https://github.com/discussions" target="_blank" rel="noopener noreferrer" class="community-card bg-slate-700/50 p-6 rounded-lg border border-slate-600 hover:bg-[var(--primary-color)]/10 transition-colors">
-              <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center"><i class="fab fa-github text-white text-xl"></i></div>
-                <div>
-                  <h4 class="font-bold">GitHub Discussions</h4>
-                  <p class="text-sm text-slate-300">Technical Q&A and project discussions</p>
-                </div>
-              </div>
+            
+            <!-- GitHub -->
+            <a href="https://github.com/darkshipreturn" target="_blank" rel="noopener noreferrer" class="flex items-center text-lg text-slate-300 hover:text-[var(--primary-color)] transition-colors">
+              <i class="fab fa-github w-8 text-center text-xl mr-3"></i>
+              <span>github.com/darkshipreturn</span>
             </a>
-            <a href="https://forum.example.com" target="_blank" rel="noopener noreferrer" class="community-card bg-slate-700/50 p-6 rounded-lg border border-slate-600 hover:bg-[var(--primary-color)]/10 transition-colors">
-              <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center"><i class="fas fa-comments text-white text-xl"></i></div>
-                <div>
-                  <h4 class="font-bold">Community Forum</h4>
-                  <p class="text-sm text-slate-300">In-depth discussions and tutorials</p>
-                </div>
-              </div>
+      
+            <!-- YouTube -->
+            <a href="https://youtube.com/@darkshipreturn" target="_blank" rel="noopener noreferrer" class="flex items-center text-lg text-slate-300 hover:text-[var(--primary-color)] transition-colors">
+              <i class="fab fa-youtube w-8 text-center text-xl mr-3 text-red-500"></i>
+              <span>YouTube Channel</span>
             </a>
-            <a href="https://twitter.com/example" target="_blank" rel="noopener noreferrer" class="community-card bg-slate-700/50 p-6 rounded-lg border border-slate-600 hover:bg-[var(--primary-color)]/10 transition-colors">
-              <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-full twitter-bg flex items-center justify-center"><i class="fab fa-twitter text-white text-xl"></i></div>
-                <div>
-                  <h4 class="font-bold">Twitter Space</h4>
-                  <p class="text-sm text-slate-300">Live audio conversations</p>
-                </div>
-              </div>
+            
+            <!-- Twitter -->
+            <a href="https://twitter.com/darkshipreturn" target="_blank" rel="noopener noreferrer" class="flex items-center text-lg text-slate-300 hover:text-[var(--primary-color)] transition-colors">
+              <i class="fab fa-twitter w-8 text-center text-xl mr-3 text-sky-400"></i>
+              <span>@darkshipreturn</span>
             </a>
           </div>
-          <div class="mt-8 pt-8 border-t border-slate-700">
-            <h3 class="text-lg font-medium mb-4 text-center">Or reach out directly:</h3>
-            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8">
-              <a href="mailto:Darkshipreturn@gmail.com" class="flex items-center text-[var(--primary-color)] hover:underline">
-                <i class="fas fa-envelope mr-2"></i> Darkshipreturn@gmail.com
+
+          <div class="mt-8 pt-6 border-t border-slate-700 text-center">
+             <a href="mailto:Darkshipreturn@gmail.com" class="inline-flex items-center text-lg text-slate-300 hover:text-[var(--primary-color)] transition-colors">
+                <i class="fas fa-envelope w-8 text-center text-xl mr-3"></i>
+                <span>Darkshipreturn@gmail.com</span>
               </a>
-            </div>
           </div>
         </div>
       </div>
@@ -285,17 +265,14 @@
           &copy; 2025 Darkshipreturn. All rights reserved.
         </div>
         <div class="flex space-x-6">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-[var(--primary-color)]" aria-label="GitHub Profile">
+          <a href="https://github.com/darkshipreturn" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-[var(--primary-color)]" aria-label="GitHub Profile">
             <i class="fab fa-github"></i>
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 twitter-icon" aria-label="Twitter Profile">
+          <a href="https://twitter.com/darkshipreturn" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-[var(--primary-color)]" aria-label="Twitter Profile">
             <i class="fab fa-twitter"></i>
           </a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-[var(--primary-color)]" aria-label="LinkedIn Profile">
             <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="https://discord.gg/7w9MptD4" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-[var(--primary-color)]" aria-label="Discord Community">
-            <i class="fab fa-discord"></i>
           </a>
         </div>
       </div>
