@@ -25,9 +25,7 @@
         <h1 class="text-2xl font-bold text-center mb-4">Admin Access</h1>
         <div class="mb-4 relative">
             <label for="password" class="block text-slate-400 text-sm font-bold mb-2">Password</label>
-            <!-- Add padding-right to input to make space for the icon -->
-            <input type="password" id="password" name="password" required class="w-full bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 text-white focus:ring-2 focus:ring-[var(--primary-color)] focus:border-[var(--primary-color)] transition pr-10">
-            <!-- The eye icon -->
+            <input type="password" id="password" name="password" required class="w-full bg-slate-700/50 border border-slate-600 rounded-md py-2 px-4 text-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition pr-10">
             <i class="fas fa-eye absolute right-3 top-10 cursor-pointer text-slate-400 hover:text-white" id="togglePassword"></i>
         </div>
         <button type="submit" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-colors">
@@ -40,13 +38,13 @@
   <!-- MAIN ADMIN CONTENT (Initially Hidden) -->
   <div id="admin-content" class="w-full max-w-md p-8 bg-slate-800/50 rounded-xl border border-slate-700 text-center">
     <h1 class="text-3xl font-bold mb-4">Admin Controls</h1>
-    <p class="text-slate-400 mb-6">These actions affect your browser's stored data for the snake game.</p>
+    <p class="text-slate-400 mb-6">These actions affect the live Firebase database.</p>
     
     <div class="bg-red-900/50 border border-red-700 rounded-lg p-4">
-        <h2 class="text-xl font-bold text-red-300 mb-2">Reset Game Data</h2>
-        <p class="text-red-300/80 mb-4">This will permanently delete the leaderboard and your saved player name from your browser's storage.</p>
+        <h2 class="text-xl font-bold text-red-300 mb-2">Reset Live Leaderboard</h2>
+        <p class="text-red-300/80 mb-4">This will permanently delete the entire leaderboard for ALL players. This action cannot be undone.</p>
         <button id="resetDataButton" class="w-full px-4 py-3 bg-red-800 hover:bg-red-700 text-white rounded-lg font-bold transition-colors">
-            <i class="fas fa-trash-alt mr-2"></i>Reset All Data
+            <i class="fas fa-trash-alt mr-2"></i>Reset Live Leaderboard
         </button>
     </div>
 
@@ -56,11 +54,33 @@
   <!-- Include the SHA-256 library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
+  <!-- ================== NEW: FIREBASE INTEGRATION ================== -->
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+
   <script>
-    // --- SECURE LOGIN LOGIC ---
+    // Your web app's Firebase configuration (the same as in game.html)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCfDTrvR1Zae4RBrJGSD7SjTQa06KVMf6U",
+      authDomain: "darkshipreturn-snake-game1.firebaseapp.com",
+      projectId: "darkshipreturn-snake-game1",
+      storageBucket: "darkshipreturn-snake-game1.firebasestorage.app",
+      messagingSenderId: "909362495325",
+      appId: "1:909362495325:web:0d381f78bda58cd85072b4",
+      measurementId: "G-YBWLS7QBB8"
+    };
 
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+  <!-- ============================================================= -->
+
+
+  <script>
+    // --- SECURE LOGIN LOGIC (No changes needed here) ---
     const STORED_HASH = "26177042ddbf20b22f6dbc6b65691a59a2f53efac99518608498789009087de8"; 
-
     const loginForm = document.getElementById('loginForm');
     const passwordInput = document.getElementById('password');
     const errorMessage = document.getElementById('errorMessage');
@@ -82,23 +102,52 @@
         }
     });
     
-    // --- NEW: Password Visibility Toggle ---
     togglePassword.addEventListener('click', () => {
-        // Toggle the type attribute
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
-        
-        // Toggle the icon
         togglePassword.classList.toggle('fa-eye');
         togglePassword.classList.toggle('fa-eye-slash');
     });
 
-    // --- RESET BUTTON LOGIC ---
-    document.getElementById('resetDataButton').addEventListener('click', () => {
-      if (confirm('Are you sure you want to reset all game data? This cannot be undone.')) {
-        localStorage.removeItem('snakeHighScores');
-        localStorage.removeItem('snakePlayerName');
-        alert('Game data has been reset successfully.');
+
+    // --- ============ MODIFIED: RESET BUTTON LOGIC ============ ---
+
+    // This new function will delete all documents in the leaderboard collection
+    async function resetFirestoreLeaderboard() {
+      console.log("Attempting to reset the leaderboard...");
+      const leaderboardCollection = db.collection('leaderboard');
+      
+      // Get all the documents from the collection
+      const snapshot = await leaderboardCollection.get();
+
+      if (snapshot.empty) {
+        console.log("Leaderboard is already empty. Nothing to delete.");
+        return;
+      }
+
+      // Firestore is more efficient if you delete documents in a "batch"
+      const batch = db.batch();
+      snapshot.docs.forEach(doc => {
+        batch.delete(doc.ref); // Add each document's deletion to the batch
+      });
+
+      // Commit the batch to delete all documents at once
+      await batch.commit();
+      console.log(`${snapshot.size} scores have been deleted from the live leaderboard.`);
+    }
+
+    // Update the event listener to call the new Firestore function
+    document.getElementById('resetDataButton').addEventListener('click', async () => {
+      // Updated confirmation message for clarity
+      if (confirm('Are you sure you want to delete the LIVE leaderboard for ALL players? This cannot be undone.')) {
+        try {
+          await resetFirestoreLeaderboard(); // Call the new async function
+          localStorage.removeItem('snakePlayerName'); // It's still good to clear the local player name
+          alert('The live leaderboard has been reset successfully.');
+        } catch (error) {
+          console.error("Error resetting leaderboard: ", error);
+          alert('An error occurred while resetting the leaderboard. Check the console for details.');
+        }
       }
     });
   </script>
